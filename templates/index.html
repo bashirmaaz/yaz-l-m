@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <title>Ders Yoklaması</title>
+</head>
+
+<body>
+    <div class="container">
+        <div>
+            {% if course_id %}
+            <h1>[ID: {{ course_id }}] {{ course_name }} Dersi Yoklaması</h1>
+            <p style="color: green; font-weight: bold;">Kamerayı açmak için "Yoklamayı Başlat" düğmesine basın.</p>
+            <input type="hidden" id="current-course-id" value="{{ course_id }}">
+            {% else %}
+            <h1>Yoklama Sistemi - Hata</h1>
+            <p style="color: red; font-weight: bold;">Hata: Lütfen Dashboard'dan bir ders seçin.</p>
+            {% endif %}
+
+            <a href="{{ url_for('main.dashboard') }}">← Dashboard'a Dön</a>
+        </div>
+        <div id="video-container">
+            <video id="camera-feed" autoplay playsinline></video>
+        </div>
+
+        <h2>Yoklama İçin Tanıma</h2>
+        <button onclick="startRecognition()" id="start-recognition-btn" {% if not course_id %}disabled{% endif
+            %}>Yoklamayı Başlat</button>
+        <button onclick="stopRecognition()" disabled id="stop-recognition-btn">Yoklamayı Durdur</button>
+
+        <div id="result">
+            Sonuçlar burada görünecek...
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/camera.js') }}"></script>
+</body>
+
+</html>
