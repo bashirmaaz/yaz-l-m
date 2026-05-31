@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Yoklama Sistemi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #0056b3;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #333;
+            margin-top: 25px;
+        }
+
+        .flash-success {
+            color: green;
+            font-weight: bold;
+        }
+
+        .flash-error {
+            color: red;
+            font-weight: bold;
+        }
+
+        .course-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .course-list li {
+            background: #e9ecef;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .course-list li a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        form input[type="text"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 250px;
+        }
+
+        form button {
+            padding: 8px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .logout-link {
+            margin-top: 20px;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Hoş Geldiniz, {{ teacher_name }} Dashboard'u</h1>
+        <a class="logout-link" href="{{ url_for('main.logout') }}">Çıkış Yap</a>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <p class="flash-{{ category }}">{{ message }}</p>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <hr>
+
+        <h2>Yeni Ders Ekle</h2>
+        <form method="POST">
+            <input type="text" name="course_name" placeholder="Ders Adı (Örn: Yapay Zeka)">
+            <button type="submit">Ders Ekle</button>
+        </form>
+
+        <hr>
+
+        <div class="reports-link">
+            <h2>Yoklama Raporları</h2>
+            <a href="{{ url_for('main.attendance_reports') }}" class="btn btn-secondary">Tüm Raporları Görüntüle</a>
+            <hr>
+        </div>
+
+        <h2>Derslerim (Toplam: {{ courses|length }})</h2>
+        {% if courses %}
+        <ul class="course-list">
+            {% for course in courses %}
+            <li>
+                <span>{{ course.name }} (ID: {{ course.id }})</span>
+                <a href="{{ url_for('main.take_attendance', course_id=course.id) }}">Yoklamayı Başlat</a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>Henüz kayıtlı bir dersiniz bulunmamaktadır. Lütfen yukarıdaki formu kullanarak yeni bir ders ekleyin.</p>
+        {% endif %}
+        <div class="registration-link">
+            <h2>Öğrenci Kaydı Yap</h2>
+            <a href="{{ url_for('main.student_registration') }}" class="btn btn-primary">Yeni Öğrenci Yüz Kaydı</a>
+            <hr>
+        </div>
+    </div>
+</body>
+
+</html>
