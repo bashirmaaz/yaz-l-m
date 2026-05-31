@@ -1,16 +1,13 @@
 # AI Tabanlı Yüz Tanıma ve Yoklama Sistemi
 
-Bu proje, kamera üzerinden yüz algılama ve yapay zeka destekli tanıma ile otomatik sınıf yoklaması almayı sağlayan bir sistemdir. 
+Proje Açıklaması: AI tabanlı, gerçek zamanlı yüz tanıma ile öğrenci yoklama takip sisteminin vizyonu ve temel işlevleri.
 
-##  Özellikler
-* Gerçek zamanlı WebRTC kamera erişimi ve frame optimizasyonu
-* DeepFace ve OpenCV ile yapay zeka tabanlı yüz tanıma
-* Kosinüs Benzerliği (Cosine Similarity) ile vektör eşleştirme
-* Flask ve SQLAlchemy (Repository Pattern) ile modüler arka plan
-* Öğretmen dashboard'u ve dinamik yoklama raporlaması
+Kullanılan Teknolojiler: Geliştirme sürecinde kullanılan kütüphane ve çatılar (Python, Flask, TensorFlow/FaceNet, OpenCV, SQLite, Bootstrap).
 
-##  Kullanılan Teknolojiler
-* **Backend:** Python, Flask, Flask-Login
-* **Yapay Zeka:** DeepFace, OpenCV, TensorFlow
-* **Veritabanı:** MySQL, SQLAlchemy (ORM)
-* **Frontend:** HTML5, CSS3, Vanilla JS (Asenkron Fetch API)
+Kurulum Adımları: Python sanal ortamının (virtual environment) oluşturulması ve pip install -r requirements.txt komutu ile bağımlılıkların projeye dahil edilmesi.
+
+Çalıştırma Talimatları: Veritabanı tablolarının oluşturulması ve python app.py (veya flask run) komutu ile yerel sunucunun ayağa kaldırılması.
+
+Ekran Görüntüleri: Sistemin öğretmen arayüzü, öğrenci kayıt (onboarding) ekranı ve yönetici dashboard görselleri.
+
+Takım Üyeleri: Geliştirici ekipte yer alan Ahmed Elrecep, Bashir Maaz ve Muhammed Elderviş'in bilgileri.
