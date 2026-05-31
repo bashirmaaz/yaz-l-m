@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ course_name }} - Yoklama Raporu</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .filter-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .filter-section select {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .report-table th,
+        .report-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .report-table th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        .present {
+            color: green;
+            font-weight: bold;
+        }
+
+        .not-present {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Yoklama Raporları</h1>
+        <a href="{{ url_for('main.dashboard') }}" class="btn btn-secondary" style="margin-bottom: 20px;">&larr;
+            Dashboard'a Dön</a>
+
+        <div class="filter-section">
+            <h2>{{ course_name }} Raporu</h2>
+            <form method="GET" action="{{ url_for('main.attendance_reports') }}">
+                <label for="course_select">Ders Seçin:</label>
+                <select id="course_select" name="course_id" onchange="this.form.submit()">
+                    <option value="" {% if not selected_course_id %}selected{% endif %}>--- Tüm Dersler ---</option>
+                    {% for course in courses %}
+                    <option value="{{ course.id }}" {% if course.id==selected_course_id %}selected{% endif %}>
+                        {{ course.name }} (ID: {{ course.id }})
+                    </option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
+
+        {% if report_data %}
+        <table class="report-table">
+            <thead>
+                <tr>
+                    <th>Tarih</th>
+                    <th>Öğrenci Adı Soyadı</th>
+                    <th>Okul Numarası</th>
+                    <th>Durum</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in report_data %}
+                <tr>
+                    <td>{{ row.date }}</td>
+                    <td>{{ row.student_name }}</td>
+                    <td>{{ row.school_number }}</td>
+                    <td class="{% if row.present == 'VAR' %}present{% else %}not-present{% endif %}">
+                        {{ row.present }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        {% if selected_course_id %}
+        <p style="text-align: center; margin-top: 30px;">Bu derse ait henüz bir yoklama kaydı bulunmamaktadır.</p>
+        {% else %}
+        <p style="text-align: center; margin-top: 30px;">Lütfen yukarıdan bir ders seçerek raporu görüntüleyin.</p>
+        {% endif %}
+        {% endif %}
+    </div>
+</body>
+
+</html>
