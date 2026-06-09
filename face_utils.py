@@ -15,19 +15,19 @@ try:
     
     # 2. Gerekli değilse, görünür cihazları sadece CPU olarak ayarla (Stabilite için)
     
-    print("TensorFlow yapılandırması tamamlandı.")
+    print("TensorFlow yapilandirmasi tamamlandi.")
 except Exception as e:
-    print(f"TensorFlow yapılandırma hatası: {e}")
+    print(f"TensorFlow yapilandirma hatasi: {e}")
     
 # --- ML MODEL YÜKLEME ---
 try:
-    print("Yüz tanıma modelini yüklüyorum... Lütfen bekleyin.")
+    print("Yuz tanima modelini yukluyorum... Lutfen bekleyin.")
     # 'Facenet' modelini, 'opencv' dedektörünü kullanarak başlat
     global_model = DeepFace.build_model('Facenet')
     global_detector = 'opencv' 
-    print("Yüz tanıma modeli başarıyla yüklendi.")
+    print("Yuz tanima modeli basariyla yuklendi.")
 except Exception as e:
-    print(f"HATA: Yüz Tanıma modeli yüklenemedi: {e}")
+    print(f"HATA: Yuz Tanima modeli yuklenemedi: {e}")
     global_model = None
     global_detector = None
 
@@ -68,7 +68,7 @@ def detect_face(frame_bytes):
 def get_embedding(face_crop):
     """Kırpılmış yüz görüntüsünden sayısal vektörü (embedding) çıkarır."""
     if global_model is None:
-        print("Model yüklenmedi, embedding oluşturulamıyor.")
+        print("Model yuklenmedi, embedding olusturulamiyor.")
         return None
 
     try:
@@ -81,7 +81,7 @@ def get_embedding(face_crop):
         return np.array(embedding_result[0]['embedding'])
     
     except Exception as e:
-        print(f"Embedding oluşturma hatası: {e}")
+        print(f"Embedding olusturma hatasi: {e}")
         return None
 
 # 3. Yüzleri Karşılaştırma (Kosinüs Benzerliği)

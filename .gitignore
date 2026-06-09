@@ -1,1 +1,8 @@
-
+venv/
+*.pyc
+__pycache__/
+instance/
+*.db
+.pytest_cache/
+.DS_Store
+*.log

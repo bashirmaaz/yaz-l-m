@@ -16,7 +16,7 @@ app = Flask(__name__)
 app.register_blueprint(main_bp)
 
 # 2. Veritabanı Bağlantı Ayarları
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Ah3631&&@localhost:3306/yoklama_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///yoklama.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'sizin-gizli-anahtariniz-buraya-gelecek' 
 
@@ -48,7 +48,7 @@ def create_tables():
         #db.drop_all()  Geçici temizlik komutu.
         
         db.create_all() 
-        print("Veritabanı tabloları başarıyla oluşturuldu!")
+        print("Veritabani tablolari basariyla olusturuldu!")
 
         # ------------------------------------------------------------------
         # Test Verisi Ekleme
@@ -58,25 +58,25 @@ def create_tables():
             teacher = Teacher(
                 username='teacher1', 
                 password_hash=generate_password_hash('123456'), 
-                name='Ali Yılmaz'
+                name='Ali Yilmaz'
             )
             db.session.add(teacher)
             
             student = Student(
                 school_number='2025001', 
-                name='Ayşe', 
+                name='Ayse', 
                 surname='Demir'
             )
             db.session.add(student)
             
             course = Course(
-                name='Yüz Tanıma Projesi', 
+                name='Yuz Tanima Projesi', 
                 teacher_id=1 
             )
             db.session.add(course)
 
             db.session.commit()
-            print("Test Öğretmen, Öğrenci (2025001) ve Ders eklendi.")
+            print("Test Ogretmen, Ogrenci (2025001) ve Ders eklendi.")
 
 
 if __name__ == '__main__':
