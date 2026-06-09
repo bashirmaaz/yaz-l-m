@@ -19,17 +19,23 @@ try:
 except Exception as e:
     print(f"TensorFlow yapilandirma hatasi: {e}")
     
-# --- ML MODEL YÜKLEME ---
-try:
-    print("Yuz tanima modelini yukluyorum... Lutfen bekleyin.")
-    # 'Facenet' modelini, 'opencv' dedektörünü kullanarak başlat
-    global_model = DeepFace.build_model('Facenet')
-    global_detector = 'opencv' 
-    print("Yuz tanima modeli basariyla yuklendi.")
-except Exception as e:
-    print(f"HATA: Yuz Tanima modeli yuklenemedi: {e}")
-    global_model = None
-    global_detector = None
+global_model = None
+global_detector = None
+
+def init_model():
+    global global_model, global_detector
+    if global_model is None:
+        try:
+            print("Yuz tanima modelini yukluyorum... Lutfen bekleyin.")
+            # 'Facenet' modelini, 'opencv' dedektörünü kullanarak başlat
+            global_model = DeepFace.build_model('Facenet')
+            global_detector = 'opencv' 
+            print("Yuz tanima modeli basariyla yuklendi.")
+        except Exception as e:
+            print(f"HATA: Yuz Tanima modeli yuklenemedi: {e}")
+            global_model = None
+            global_detector = None
+    return global_model, global_detector
 
 
 # 1. Yüz Tespiti ve Kırpma (OpenCV)
@@ -41,13 +47,14 @@ def detect_face(frame_bytes):
     if frame is None:
         return None, "Görüntü okunamadı."
 
-    if global_detector is None:
+    _, detector = init_model()
+    if detector is None:
         return None, "Yüz dedektörü başlatılmadı."
 
     try:
         # Önceden yüklenmiş dedektörü kullan
         face_objs = DeepFace.extract_faces(img_path=frame, 
-                                           detector_backend=global_detector,
+                                           detector_backend=detector,
                                            enforce_detection=False)
         
         if not face_objs:
@@ -67,7 +74,8 @@ def detect_face(frame_bytes):
 # 2. Yüz Gömmesi (Embedding) Oluşturma (DeepFace)
 def get_embedding(face_crop):
     """Kırpılmış yüz görüntüsünden sayısal vektörü (embedding) çıkarır."""
-    if global_model is None:
+    model, _ = init_model()
+    if model is None:
         print("Model yuklenmedi, embedding olusturulamiyor.")
         return None
 
